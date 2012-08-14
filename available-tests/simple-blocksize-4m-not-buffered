@@ -2,7 +2,7 @@
 description=Read/Write in 4M blocks (Non-buffered I/O)
 
 [iometer]
-bs=4m,4m
+bs=4m
 rw=randrw
 rwmixread=80
 direct=1
