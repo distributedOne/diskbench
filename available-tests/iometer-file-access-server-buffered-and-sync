@@ -1,0 +1,18 @@
+[global]
+description=Emulation of Intel IOmeter File Server Access Pattern (Buffered I/O and Sync on Finish)
+
+[iometer]
+bssplit=512/10:1k/5:2k/5:4k/60:8k/2:16k/4:32k/4:64k/10
+rw=randrw
+rwmixread=80
+direct=0
+end_fsync=true
+size=4g
+ioengine=libaio
+# IOMeter defines the server loads as the following:
+# iodepth=1 Linear
+# iodepth=4 Very Light
+# iodepth=8 Light
+# iodepth=64  Moderate
+# iodepth=256 Heavy
+iodepth=64
