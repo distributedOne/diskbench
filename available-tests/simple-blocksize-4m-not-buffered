@@ -1,5 +1,5 @@
 [global]
-description=Read/Write in 4M blocks (Non-buffered I/O)
+description=4M blocks (Non-buffered I/O)
 
 [iometer]
 bs=4m
