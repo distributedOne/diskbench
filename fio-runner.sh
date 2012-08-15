@@ -30,6 +30,7 @@ until [ $COUNTER -gt $NUMBER_OF_TIMES_TO_RUN_EACH_JOB ]; do
     echo "===================="
       echo "Running: ${t}"
       echo "Pass Number: ${COUNTER}"
+      echo "Test Size: ${SIZE_OF_TEST}"
       touch ${RESULT_PATH}/${TIME}-${t}-pass-${COUNTER}
       fio --output=${RESULT_PATH}/${TIME}-${t}-pass-${COUNTER} ./enabled-tests/${t} 
     echo "===================="
