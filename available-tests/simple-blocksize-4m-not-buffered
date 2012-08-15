@@ -6,7 +6,7 @@ bs=4m
 rw=randrw
 rwmixread=80
 direct=1
-size=512m
+size=${TEST_SIZE}
 ioengine=libaio
 # IOMeter defines the server loads as the following:
 # iodepth=1 Linear

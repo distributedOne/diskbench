@@ -2,6 +2,9 @@
 
 ## SETTINGS ##
 NUMBER_OF_TIMES_TO_RUN_EACH_JOB=3
+SIZE_OF_TEST="512m"
+
+export TEST_SIZE=${SIZE_OF_TEST}
 
 #Get time and create results folder
 YEAR=`date +%Y`
