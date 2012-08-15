@@ -1,7 +1,7 @@
 [global]
 description=4M blocks (Non-buffered I/O)
 
-[job]
+[simple-blocksize-4m-not-buffered]
 bs=4m
 rw=randrw
 rwmixread=80
