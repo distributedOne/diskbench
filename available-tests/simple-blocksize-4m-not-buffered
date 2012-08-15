@@ -15,3 +15,6 @@ ioengine=libaio
 # iodepth=64  Moderate
 # iodepth=256 Heavy
 iodepth=64
+
+# Settings from environment variables
+numjobs=${NUMJOBS}
