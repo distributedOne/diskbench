@@ -19,7 +19,7 @@ do
     echo "Running: ${t}"
     echo "Pass Number: ${COUNTER}"
     touch ${RESULT_PATH}/${TIME}-${t}-pass-${COUNTER}
-    fio --output=${RESULT_PATH}/${t}-pass-${COUNTER} ./enabled-tests/${t} 
+    fio --output=${RESULT_PATH}/${TIME}-${t}-pass-${COUNTER} ./enabled-tests/${t} 
     let COUNTER+=1
   done
   echo "===================="
