@@ -1,17 +1,11 @@
 [global]
-description=4M blocks (Non-buffered I/O)
+description=4M blocks (Non-buffered I/O Sequential)
 
-[simple-blocksize-4m-not-buffered]
+[simple-blocksize-4m-not-buffered-sequential]
 bs=4m
 rw=rw
 rwmixread=80
 direct=1
-size=512m
+size=${TEST_SIZE}
 ioengine=libaio
-# IOMeter defines the server loads as the following:
-# iodepth=1 Linear
-# iodepth=4 Very Light
-# iodepth=8 Light
-# iodepth=64  Moderate
-# iodepth=256 Heavy
-iodepth=64
+iodepth=${IO_DEPTH}
