@@ -11,18 +11,18 @@ TIME=`date +%H-%M-%S`
 RESULT_PATH="./results/${YEAR}/${MONTH}/${DAY}"
 mkdir -p ${RESULT_PATH}
 
-for t in `ls -1 enabled-tests/`
-do
-  COUNTER=1
-  echo "===================="
-  until [ $COUNTER -gt $NUMBER_OF_TIMES_TO_RUN_EACH_JOB ]; do
-    echo "Running: ${t}"
-    echo "Pass Number: ${COUNTER}"
-    touch ${RESULT_PATH}/${TIME}-${t}-pass-${COUNTER}
-    fio --output=${RESULT_PATH}/${TIME}-${t}-pass-${COUNTER} ./enabled-tests/${t} 
-    let COUNTER+=1
+until [ $COUNTER -gt $NUMBER_OF_TIMES_TO_RUN_EACH_JOB ]; do
+  for t in `ls -1 enabled-tests/`
+  do
+    COUNTER=1
+    echo "===================="
+      echo "Running: ${t}"
+      echo "Pass Number: ${COUNTER}"
+      touch ${RESULT_PATH}/${TIME}-${t}-pass-${COUNTER}
+      fio --output=${RESULT_PATH}/${TIME}-${t}-pass-${COUNTER} ./enabled-tests/${t} 
+    echo "===================="
   done
-  echo "===================="
+  let COUNTER+=1
 done
 
 echo "===================="
