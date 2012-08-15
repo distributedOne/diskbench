@@ -1,0 +1,17 @@
+[global]
+description=4M blocks (Non-buffered I/O)
+
+[simple-blocksize-4m-not-buffered]
+bs=4m
+rw=rw
+rwmixread=80
+direct=1
+size=512m
+ioengine=libaio
+# IOMeter defines the server loads as the following:
+# iodepth=1 Linear
+# iodepth=4 Very Light
+# iodepth=8 Light
+# iodepth=64  Moderate
+# iodepth=256 Heavy
+iodepth=64
