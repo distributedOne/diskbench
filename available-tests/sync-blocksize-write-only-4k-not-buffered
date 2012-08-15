@@ -1,0 +1,11 @@
+[global]
+description=Sync engine 4k blocks (Non-buffered I/O) Write-only
+
+[sync-blocksize-4m-not-buffered-read-only]
+bs=4k
+rw=write
+rwmixread=80
+direct=1
+size=${TEST_SIZE}
+ioengine=sync
+iodepth=${IO_DEPTH}
