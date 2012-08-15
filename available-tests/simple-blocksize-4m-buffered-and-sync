@@ -1,7 +1,7 @@
 [global]
 description=4M blocks (Buffered I/O and Sync on Finish)
 
-[iometer]
+[job]
 bs=4m
 rw=randrw
 rwmixread=80
