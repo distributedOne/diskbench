@@ -7,7 +7,7 @@ rw=randrw
 rwmixread=80
 direct=0
 end_fsync=1
-size=4g
+size=512m
 ioengine=libaio
 # IOMeter defines the server loads as the following:
 # iodepth=1 Linear
