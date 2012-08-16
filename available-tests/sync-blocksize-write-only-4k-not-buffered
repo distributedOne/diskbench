@@ -1,7 +1,7 @@
 [global]
 description=Sync engine 4k blocks (Non-buffered I/O) Write-only
 
-[sync-blocksize-4k-not-buffered-read-only]
+[sync-blocksize-4k-not-buffered-write-only]
 bs=4k
 rw=write
 rwmixread=80
