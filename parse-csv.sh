@@ -11,9 +11,9 @@ do
     for day in `ls -1 $MONTH_PATH/`;
     do
       DAY_PATH=$MONTH_PATH/$day
-      for runset in `ls -1 $DAY_PATH | awk -F- {'print \$1"-"\$2"-"\$3'} | uniq | sort`;
+      for runset in `ls -1 $DAY_PATH | awk -F- {'print \$1"-"\$2"-"\$3'} | uniq | sort | uniq`;
       do
-        for pass in `ls -1 $DAY_PATH/$runset-* | awk -F'pass-' {'print \$2'} | uniq | sort`;
+        for pass in `ls -1 $DAY_PATH/$runset-* | awk -F'pass-' {'print \$2'} | uniq | sort | uniq`;
         do
           for file in `ls -1 $DAY_PATH/$runset-*-$pass`;
           do
