@@ -26,6 +26,8 @@ TIME=`date +%H-%M-%S`
 RESULT_PATH="./results/${YEAR}/${MONTH}/${DAY}"
 mkdir -p ${RESULT_PATH}
 
+echo "Start: "`date +%H:%M:%S`
+
 COUNTER=1
 until [ $COUNTER -gt $NUMBER_OF_TIMES_TO_RUN_EACH_JOB ]; do
   for t in `ls -1 enabled-tests/`
@@ -42,4 +44,4 @@ until [ $COUNTER -gt $NUMBER_OF_TIMES_TO_RUN_EACH_JOB ]; do
 done
 
 echo "===================="
-echo "DONE"
+echo "Done: "`date +%H:%M:%S`
