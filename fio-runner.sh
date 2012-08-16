@@ -3,6 +3,7 @@
 ## SETTINGS ##
 NUMBER_OF_TIMES_TO_RUN_EACH_JOB=3
 SIZE_OF_TEST="512m"
+TEST_FILENAME="fio_test_file"
 
 # IOMeter defines the server loads as the following:
 # iodepth=1 Linear
@@ -12,8 +13,10 @@ SIZE_OF_TEST="512m"
 # iodepth=256 Heavy
 IO_DEPTH="64"
 
+#export variables for job files
 export TEST_SIZE=${SIZE_OF_TEST}
 export IO_DEPTH=${IO_DEPTH}
+export TEST_FILENAME=${TEST_FILENAME}
 
 #Get time and create results folder
 YEAR=`date +%Y`

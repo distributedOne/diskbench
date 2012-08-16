@@ -10,3 +10,4 @@ end_fsync=1
 size=${TEST_SIZE}
 ioengine=libaio
 iodepth=1
+filename=${TEST_FILENAME}
