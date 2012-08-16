@@ -9,4 +9,4 @@ direct=0
 end_fsync=1
 size=${TEST_SIZE}
 ioengine=libaio
-iodepth=${IO_DEPTH}
+iodepth=1
