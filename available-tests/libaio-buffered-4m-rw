@@ -1,0 +1,12 @@
+[global]
+description=4M blocks (Buffered I/O and Sync on Finish Sequential)
+
+[libaio-buffered-sync-4m-rw]
+bs=4m
+rw=rw
+direct=0
+end_fsync=1
+size=${TEST_SIZE}
+ioengine=libaio
+iodepth=1
+filename=${TEST_FILENAME}

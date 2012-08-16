@@ -1,0 +1,11 @@
+[global]
+description=Sync engine 4k blocks (Buffered I/O) Read-only
+
+[sync-buffered-4k-r]
+bs=4k
+rw=read
+direct=0
+size=${TEST_SIZE}
+ioengine=sync
+iodepth=1
+filename=${TEST_FILENAME}
