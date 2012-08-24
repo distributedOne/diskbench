@@ -2,7 +2,7 @@
 
 ## SETTINGS ##
 NUMBER_OF_TIMES_TO_RUN_EACH_JOB=3
-SIZE_OF_TEST="512m"
+SIZE_OF_TEST="4096m"
 TEST_FILENAME="fio_test_file"
 
 # IOMeter defines the server loads as the following:
