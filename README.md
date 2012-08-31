@@ -1,7 +1,7 @@
-FIO Testing Tools
+Benchmark Automation Script
 ===========
 
-A collection of Flexible IO Tester (fio) tests and simple tools for disk performance testing with fio.
+A script that automates benchmark testing via a collection fio and iozone tests and simple tools for disk performance testing.
 
 Tests
 ===========
@@ -35,7 +35,7 @@ Executing The Tests
 
 Once you have enabled the tests you want to run all you need to do is execute is the fio-runner.sh script:
 
-    ./fio-runner.sh
+    ./diskbench.sh
 
 This will execute each of the fio tests and their results will be stored into the results folder.
 
@@ -44,7 +44,7 @@ Analyzing The Results
 
 You can find the result files in the results/ folder. For my own purposes I've been requiring read/write iops and bandwidth information. If you're interested in the same there is a parse-csv.sh file which will generate a csv you can import into your favorite spreadsheet application:
 
-    ./parse-csv.sh > results.csv
+    ./parse-csv-fio.sh > results.csv
 
 If you don't pipe the output somewhere it will go to your console's default output.
 
