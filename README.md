@@ -35,7 +35,11 @@ Executing The Tests
 
 Once you have enabled the tests you want to run all you need to do is execute is the fio-runner.sh script:
 
-    ./diskbench.sh
+    ./diskbench.sh 
+    Usage: ./diskbench.sh: [OPTIONS]
+      -u              : Directory/mountpoint to test
+      -s              : Test file size (default: 4G)
+      -i              : I/O depth (used by fio) (default: 256 - heavy)
 
 This will execute each of the fio tests and their results will be stored into the results folder.
 
