@@ -31,7 +31,7 @@ log()
 
 sysinfo()
 {
-  mkdir ${RESULT_PATH}/sysinfo
+  mkdir -p ${RESULT_PATH}/sysinfo
 
   for proc in cpuinfo meminfo mounts modules version
   do
@@ -93,6 +93,12 @@ check_apps()
   fi
 }
 
+results()
+{
+  tar cfz results.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz ${RESULT_PATH}/
+  log "Results: results.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz"
+}
+
 while getopts 'u:s:i' OPTION
 do
     case ${OPTION} in
@@ -127,5 +133,8 @@ log "Start: `date +%H:%M:%S`"
 launch_fio
 launch_iozone
 log "Done: `date +%H:%M:%S`"
+
+# prepare the result tar.gz
+results
 
 exit 0
