@@ -61,6 +61,17 @@ launch_iozone()
 
 }
 
+check_apps()
+{
+  for app in iozone fio
+  do
+    if [ ! "`which $app`" ]; then
+        echo "ERROR: '$app' application is required. Please install it the re-run the script."
+        exit 1
+    fi
+  done
+}
+
 while getopts 'u:s:i' OPTION
 do
     case ${OPTION} in
@@ -84,6 +95,11 @@ if [ ! "${TEST_DIRECTORY}" ] || [ ! "${TEST_SIZE}" ] || [ ! "${IO_DEPTH}" ] ; th
     usage
 fi
 
+# first, check that all applications are installed on the system
+check_apps
+
+
+# start the tests
 log "Start: `date +%H:%M:%S`"
 launch_fio
 launch_iozone
