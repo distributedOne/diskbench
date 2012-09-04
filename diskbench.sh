@@ -79,13 +79,18 @@ launch_iozone()
 
 check_apps()
 {
-  for app in iozone fio dmidecode
+  for app in iozone fio dmidecode qqq aaa
   do
     if [ ! "`which $app`" ]; then
-        echo "ERROR: '$app' application is required. Please install it the re-run the script."
-        exit 1
+        echo "ERROR: '$app' application is required."
+        EXIT=1
     fi
   done
+
+  if [ "$EXIT" == "1" ]; then
+    echo "Please install the above application(s) then re-run the script."
+    exit $EXIT
+  fi
 }
 
 while getopts 'u:s:i' OPTION
