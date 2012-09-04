@@ -29,6 +29,22 @@ log()
     echo $1 | tee -a ${RESULT_PATH}/output.log
 }
 
+sysinfo()
+{
+  mkdir ${RESULT_PATH}/sysinfo
+
+  for proc in cpuinfo meminfo mounts modules version
+  do
+    cat /proc/$proc > ${RESULT_PATH}/sysinfo/$proc
+  done
+
+  for cmd in dmesg env lscpu lsmod lspci dmidecode free
+  do
+    $cmd > ${RESULT_PATH}/sysinfo/$cmd
+  done
+}
+
+
 launch_fio()
 {
   log "===> FIO TESTS: START (`date +%H:%M:%S`)"
@@ -63,7 +79,7 @@ launch_iozone()
 
 check_apps()
 {
-  for app in iozone fio
+  for app in iozone fio dmidecode
   do
     if [ ! "`which $app`" ]; then
         echo "ERROR: '$app' application is required. Please install it the re-run the script."
@@ -98,6 +114,8 @@ fi
 # first, check that all applications are installed on the system
 check_apps
 
+# collect system information
+sysinfo
 
 # start the tests
 log "Start: `date +%H:%M:%S`"
