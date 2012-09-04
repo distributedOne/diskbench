@@ -79,7 +79,7 @@ launch_iozone()
 
 check_apps()
 {
-  for app in iozone fio dmidecode qqq aaa
+  for app in iozone fio dmidecode
   do
     if [ ! "`which $app`" ]; then
         echo "ERROR: '$app' application is required."
