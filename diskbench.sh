@@ -82,7 +82,7 @@ launch_iozone()
 
 launch_bonnie()
 {
-  bonnie++ -q -u `whoami` -d ${TEST_DIRECTORY}/ -m ${NAME} -n 256 > ${RESULT_PATH}/bonnie.csv
+  bonnie++ -q -u `whoami` -d ${TEST_DIRECTORY}/ -m ${TEST_NAME} -n 258 > ${RESULT_PATH}/bonnie.csv
 }
 
 check_apps()
@@ -103,8 +103,8 @@ check_apps()
 
 results()
 {
-  tar cfz results.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz ${RESULT_PATH}/
-  log "Results: results.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz"
+  tar cfz results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz ${RESULT_PATH}/
+  log "Results: results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz"
 }
 
 while getopts 'u:s:i:n:' OPTION
@@ -143,7 +143,7 @@ sysinfo
 log "Start: `date +%H:%M:%S`"
 launch_fio
 launch_iozone
-launch_bonnie++
+launch_bonnie
 log "Done: `date +%H:%M:%S`"
 
 # prepare the result tar.gz
