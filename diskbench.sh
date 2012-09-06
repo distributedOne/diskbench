@@ -20,7 +20,10 @@ usage()
     echo "  -u              : Directory/mountpoint to test"
     echo "  -s              : Test file size (default: 4G)"
     echo "  -i              : I/O depth (used by fio) (default: 256 - heavy)" 
+    echo "  -n              : Test name (used for the comparaison)"
     echo ""
+    echo "Example:"
+    echo "  $0 -u /mnt/nfs/ -s 4G -i 256 -n nfs_raid10"
     exit 1
 }
 
@@ -77,9 +80,14 @@ launch_iozone()
 
 }
 
+launch_bonnie()
+{
+  bonnie++ -q -u `whoami` -d ${TEST_DIRECTORY}/ -m ${NAME} -n 256 > ${RESULT_PATH}/bonnie.csv
+}
+
 check_apps()
 {
-  for app in iozone fio dmidecode
+  for app in iozone fio dmidecode bonnie++
   do
     if [ ! "`which $app`" ]; then
         echo "ERROR: '$app' application is required."
@@ -99,7 +107,7 @@ results()
   log "Results: results.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz"
 }
 
-while getopts 'u:s:i' OPTION
+while getopts 'u:s:i:n:' OPTION
 do
     case ${OPTION} in
     u)
@@ -111,6 +119,9 @@ do
     i)
         export IO_DEPTH="${OPTARG}"
         ;;
+    n)
+        export TEST_NAME="${OPTARG}"
+        ;;
     ?)
         usage
         ;;
@@ -118,7 +129,7 @@ do
 done
 
 # mandatory parameters
-if [ ! "${TEST_DIRECTORY}" ] || [ ! "${TEST_SIZE}" ] || [ ! "${IO_DEPTH}" ] ; then
+if [ ! "${TEST_DIRECTORY}" ] || [ ! "${TEST_SIZE}" ] || [ ! "${IO_DEPTH}" ] || [ ! "${TEST_NAME}" ]; then
     usage
 fi
 
@@ -132,6 +143,7 @@ sysinfo
 log "Start: `date +%H:%M:%S`"
 launch_fio
 launch_iozone
+launch_bonnie++
 log "Done: `date +%H:%M:%S`"
 
 # prepare the result tar.gz
