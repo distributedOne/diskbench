@@ -23,7 +23,7 @@ usage()
     echo "  -n              : Test name (used for the comparaison)"
     echo ""
     echo "Example:"
-    echo "  $0 -u /mnt/nfs/ -s 4G -i 256 -n nfs_raid10"
+    echo "  $0 -u /mnt/nfs/ -s 4G -i 256 -n mytestname"
     exit 1
 }
 
