@@ -59,22 +59,24 @@ launch_fio()
         log "Running: ${t}"
         log "Pass Number: ${COUNTER}"
         log "Test Size: ${TEST_SIZE}"
-        touch ${RESULT_PATH}/${TIME}-${t}-pass-${COUNTER}
-        fio --output=${RESULT_PATH}/${TIME}-${t}-pass-${COUNTER} ./enabled-tests/${t}
+        touch ${RESULT_PATH}/fio-${t}-pass-${COUNTER}
+        fio --output=${RESULT_PATH}/fio-${t}-pass-${COUNTER} ./enabled-tests/${t}
       log ""
     done
     let COUNTER+=1
   done
   log "===> FIO TESTS: END (`date +%H:%M:%S`)"
+
+  fiotocsv
 }
 
 launch_iozone()
 {
   log "===> IOZONE TESTS: START (`date +%H:%M:%S`)"
   if [ `grep ${TEST_DIRECTORY} /etc/fstab` ]; then
-    iozone -a -R -c -U ${TEST_DIRECTORY} -f ${TEST_DIRECTORY}/${TEST_FILENAME} -b ${RESULT_PATH}/iozone.xls
+    iozone -a -R -c -U ${TEST_DIRECTORY} -f ${TEST_DIRECTORY}/${TEST_FILENAME} -b ${RESULT_PATH}/result_iozone.xls
   else
-    iozone -a -R -c -f ${TEST_DIRECTORY}/${TEST_FILENAME} -b ${RESULT_PATH}/iozone.xls
+    iozone -a -R -c -f ${TEST_DIRECTORY}/${TEST_FILENAME} -b ${RESULT_PATH}/result_iozone.xls
   fi
   log "===> IOZONE TESTS: END (`date +%H:%M:%S`)"
 
@@ -82,7 +84,7 @@ launch_iozone()
 
 launch_bonnie()
 {
-  bonnie++ -q -u `whoami` -d ${TEST_DIRECTORY}/ -m ${TEST_NAME} -n 258 > ${RESULT_PATH}/bonnie.csv
+  bonnie++ -q -u `whoami` -d ${TEST_DIRECTORY}/ -m ${TEST_NAME} -n 258 > ${RESULT_PATH}/result_bonnie.csv
 }
 
 check_apps()
@@ -101,10 +103,38 @@ check_apps()
   fi
 }
 
+fiotocsv()
+{
+  echo "Test name,Test type,Read IOPS,WRITE IOPS,READ BW, WRITE BW" > ${RESULT_PATH}/result_fio.csv
+  for pass in `ls -1 $RESULT_PATH/fio-* | awk -F'pass-' {'print \$2'} | uniq | sort | uniq`;
+  do
+    for file in `ls -1 $RESULT_PATH/fio-*-$pass`;
+    do
+      cat $RESULT_PATH/NAME >> ${RESULT_PATH}/result_fio.csv
+      echo -n "," >> ${RESULT_PATH}/result_fio.csv
+      JOB=`head -n 1 ${file} | awk -F: {'print \$1'}`
+      echo -n "${JOB}," >> ${RESULT_PATH}/result_fio.csv
+      READ_IOPS=`grep iops ${file}| grep read | awk -F'iops=' {'print \$2'} | awk {'print \$1'}`
+      echo -n "${READ_IOPS}," >> ${RESULT_PATH}/result_fio.csv
+      WRITE_IOPS=`grep iops ${file}| grep write | awk -F'iops=' {'print \$2'} | awk {'print \$1'}`
+      echo -n "${WRITE_IOPS}," >> ${RESULT_PATH}/result_fio.csv
+      READ_BANDWIDTH=`grep READ ${file} | awk -F'maxb=' {'print \$2'} | awk -F, {'print \$1'}`
+      echo -n "${READ_BANDWIDTH}," >> ${RESULT_PATH}/result_fio.csv
+      WRITE_BANDWIDTH=`grep WRITE ${file} | awk -F'maxb=' {'print \$2'} | awk -F, {'print \$1'}`
+      echo "${WRITE_BANDWIDTH}" >> ${RESULT_PATH}/result_fio.csv
+    done
+  done
+}
+
 results()
 {
   tar cfz results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz ${RESULT_PATH}/
   log "Results: results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz"
+}
+
+set_name()
+{
+  echo -n ${TEST_NAME} > ${RESULT_PATH}/NAME
 }
 
 while getopts 'u:s:i:n:' OPTION
@@ -138,6 +168,9 @@ check_apps
 
 # collect system information
 sysinfo
+
+# set test name
+set_name
 
 # start the tests
 log "Start: `date +%H:%M:%S`"
