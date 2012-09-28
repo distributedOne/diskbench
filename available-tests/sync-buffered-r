@@ -1,0 +1,18 @@
+[global]
+description=Sync engine 4k/64k/512k blocks (Buffered I/O) Read-only
+rw=read
+direct=0
+size=${TEST_SIZE}
+ioengine=sync
+iodepth=1
+filename=${TEST_FILENAME}
+directory=${TEST_DIRECTORY}
+
+[sync-buffered-4k-r]
+bs=4k
+
+[sync-buffered-4k-r]
+bs=64k
+
+[sync-buffered-4k-r]
+bs=512k
