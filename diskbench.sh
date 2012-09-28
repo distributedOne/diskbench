@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## SETTINGS ##
-NUMBER_OF_TIMES_TO_RUN_EACH_JOB=3
+NUMBER_OF_TIMES_TO_RUN_EACH_JOB=1
 export TEST_SIZE="4096m"
 export TEST_FILENAME="fio_test_file"
 export IO_DEPTH="256"
@@ -60,7 +60,7 @@ launch_fio()
         log "Pass Number: ${COUNTER}"
         log "Test Size: ${TEST_SIZE}"
         touch ${RESULT_PATH}/fio-${t}-pass-${COUNTER}
-        fio --output=${RESULT_PATH}/fio-${t}-pass-${COUNTER} ./enabled-tests/${t}
+        fio --timeout=30m --output=${RESULT_PATH}/fio-${t}-pass-${COUNTER} ./enabled-tests/${t}
       log ""
     done
     let COUNTER+=1
