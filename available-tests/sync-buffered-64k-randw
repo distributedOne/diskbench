@@ -1,0 +1,12 @@
+[global]
+description=64k blocks (Buffered Random Write)
+
+[sync-buffered-64k-randw]
+bs=64k
+rw=randwrite
+direct=0
+size=${TEST_SIZE}
+ioengine=sync
+iodepth=1
+filename=${TEST_FILENAME}
+directory=${TEST_DIRECTORY}
