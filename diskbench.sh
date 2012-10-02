@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 ## SETTINGS ##
 NUMBER_OF_TIMES_TO_RUN_EACH_JOB=3
@@ -21,9 +22,12 @@ usage()
     echo "  -s              : Test file size (default: 4G)"
     echo "  -i              : I/O depth (used by fio) (default: 256 - heavy)" 
     echo "  -n              : Test name (used for the comparaison)"
+    echo "  -p profile_name : Enable tests based on a profile (optional)"
+    echo "  -g 500          : Number of pgs for the rados bench pool (default: 500) (optional)"
+    echo "  -x              : Run extra tests: IOZone and Bonnie++ (optional)"
     echo ""
     echo "Example:"
-    echo "  $0 -u /mnt/nfs/ -s 4G -i 256 -n mytestname"
+    echo "  $0 -u /mnt/nfs/ -s 4G -i 256 -n mytestname -x"
     exit 1
 }
 
@@ -50,17 +54,17 @@ sysinfo()
 launch_rados()
 {
   log "===> CREATE POOL: ${TIME}_performance (`date +%H:%M:%S`)"
-  ceph osd pool create ${TIME}_performance ${PGS} ${PGS}
+  sudo ceph osd pool create ${TIME}_performance ${PGS} ${PGS}
 
   log "===> RADOS BENCH WRITE TEST: START (`date +%H:%M:%S`)"
-  rados bench 600 write -p ${TIME}_performance -o ${RESULT_PATH}/result_rados_write.csv
+  sudo rados bench 600 write -p ${TIME}_performance -o ${RESULT_PATH}/result_rados_write.csv
   log "===> RADOS BENCH WRITE TEST: END (`date +%H:%M:%S`)"
 
   log "===> RADOS BENCH READ TEST: START (`date +%H:%M:%S`)"
-  rados bench 600 seq -p ${TIME}_performance -o ${RESULT_PATH}/result_rados_seq.csv
+  sudo rados bench 600 seq -p ${TIME}_performance -o ${RESULT_PATH}/result_rados_seq.csv
   log "===> RADOS BENCH READ TEST: END (`date +%H:%M:%S`)"
 
-  ceph osd pool delete ${TIME}_performance
+  sudo ceph osd pool delete ${TIME}_performance
   log "===> DELETE POOL: ${TIME}_performance (`date +%H:%M:%S`)"
 }
 
@@ -164,7 +168,7 @@ set_name()
   echo -n ${TEST_NAME} > ${RESULT_PATH}/NAME
 }
 
-while getopts 'u:s:i:n:pgx' OPTION
+while getopts 'u:s:i:n:p:g:x' OPTION
 do
     case ${OPTION} in
     u)
@@ -180,13 +184,13 @@ do
         export TEST_NAME="${OPTARG}"
         ;;
     p)
-        PROFILE="${OPTARG}"
+        export PROFILE_NAME="${OPTARG}"
         ;;
     g)
-        PGS="${OPTARG}"
+        export PGS="${OPTARG}"
         ;;
     x)
-        EXTRA_TESTS="1"
+        export EXTRA_TESTS="1"
         ;;
     ?)
         usage
@@ -197,25 +201,6 @@ done
 # mandatory parameters
 if [ ! "${TEST_DIRECTORY}" ] || [ ! "${TEST_SIZE}" ] || [ ! "${IO_DEPTH}" ] || [ ! "${TEST_NAME}" ]; then
     usage
-fi
-
-# set profile to none if empty
-if [ -z "${PROFILE}" ]; then
-    PROFILE="none"
-else
-  if [ -z "${PGS}" ]; then
-      PGS="500"
-  fi
-  for test in `cat ./profiles/${PROFILE}`;
-    do
-      if [ "$test" == "rados-bench" ]; then
-        launch_rados
-      else
-        cd ./enabled-tests/;
-        ln -s ../available-tests/$test
-        cd ./..;
-      fi
-    done;
 fi
 
 # first, check that all applications are installed on the system
@@ -229,6 +214,27 @@ set_name
 
 # start the tests
 log "Start: `date +%H:%M:%S`"
+
+# set profile to none if empty
+if [ -z "${PROFILE_NAME}" ]; then
+    PROFILE_NAME="none"
+else
+  if [ -z "${PGS}" ]; then
+      PGS="500"
+  fi
+  
+  for oldtest in `ls -1 ./enabled-tests/`; do rm ./enabled-tests/$oldtest; done;
+  for test in `cat ./profiles/${PROFILE_NAME}`;
+    do
+      if [ "$test" == "rados-bench" ]; then
+        launch_rados
+      else
+        ln -s ../available-tests/$test
+      fi
+    done;
+  cd ./..;
+fi
+
 launch_fio
 if [ ! -z "${EXTRA_TESTS}" ]; then
     launch_iozone
