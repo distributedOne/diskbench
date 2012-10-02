@@ -105,14 +105,25 @@ launch_bonnie()
 
 check_apps()
 {
-  for app in iozone fio dmidecode bonnie++
+  for app in fio dmidecode
   do
     if [ ! "`which $app`" ]; then
         echo "ERROR: '$app' application is required."
         EXIT=1
     fi
   done
+  
+  if [ ! -z "${EXTRA_TESTS}" ]; then
 
+    for app in iozone bonnie++
+    do
+      if [ ! "`which $app`" ]; then
+          echo "ERROR: '$app' application is required."
+          EXIT=1
+      fi
+    done
+  fi
+  
   if [ "$EXIT" == "1" ]; then
     echo "Please install the above application(s) then re-run the script."
     exit $EXIT
@@ -173,7 +184,7 @@ do
     g)
         PGS="${OPTARG}"
     x)
-        EXTRA_TESTS="${OPTARG}"
+        EXTRA_TESTS="1"
     ?)
         usage
         ;;
@@ -216,8 +227,10 @@ set_name
 # start the tests
 log "Start: `date +%H:%M:%S`"
 launch_fio
-launch_iozone
-launch_bonnie
+if [ ! -z "${EXTRA_TESTS}" ]; then
+    launch_iozone
+    launch_bonnie
+fi
 log "Done: `date +%H:%M:%S`"
 
 # prepare the result tar.gz
