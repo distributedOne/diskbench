@@ -1,0 +1,12 @@
+[global]
+description=Sync engine 64k blocks (Buffered I/O) Write-only
+
+[sync-buffered-64k-w]
+bs=64k
+rw=write
+direct=0
+size=${TEST_SIZE}
+ioengine=sync
+iodepth=1
+filename=${TEST_FILENAME}
+directory=${TEST_DIRECTORY}
