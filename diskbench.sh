@@ -47,6 +47,22 @@ sysinfo()
   done
 }
 
+launch_rados()
+{
+  log "===> CREATE POOL: ${TIME}_performance (`date +%H:%M:%S`)"
+  ceph osd pool create ${TIME}_performance ${PGS} ${PGS}
+
+  log "===> RADOS BENCH WRITE TEST: START (`date +%H:%M:%S`)"
+  rados bench 600 write -p ${TIME}_performance -o ${RESULT_PATH}/result_rados_write.csv
+  log "===> RADOS BENCH WRITE TEST: END (`date +%H:%M:%S`)"
+
+  log "===> RADOS BENCH READ TEST: START (`date +%H:%M:%S`)"
+  rados bench 600 seq -p ${TIME}_performance -o ${RESULT_PATH}/result_rados_seq.csv
+  log "===> RADOS BENCH READ TEST: END (`date +%H:%M:%S`)"
+
+  ceph osd pool delete ${TIME}_performance
+  log "===> DELETE POOL: ${TIME}_performance (`date +%H:%M:%S`)"
+}
 
 launch_fio()
 {
@@ -137,7 +153,7 @@ set_name()
   echo -n ${TEST_NAME} > ${RESULT_PATH}/NAME
 }
 
-while getopts 'u:s:i:n:' OPTION
+while getopts 'u:s:i:n:pgx' OPTION
 do
     case ${OPTION} in
     u)
@@ -152,6 +168,12 @@ do
     n)
         export TEST_NAME="${OPTARG}"
         ;;
+    p)
+        PROFILE="${OPTARG}"
+    g)
+        PGS="${OPTARG}"
+    x)
+        EXTRA_TESTS="${OPTARG}"
     ?)
         usage
         ;;
@@ -161,6 +183,25 @@ done
 # mandatory parameters
 if [ ! "${TEST_DIRECTORY}" ] || [ ! "${TEST_SIZE}" ] || [ ! "${IO_DEPTH}" ] || [ ! "${TEST_NAME}" ]; then
     usage
+fi
+
+# set profile to none if empty
+if [ -z "${PROFILE}" ]; then
+    PROFILE="none"
+else
+  if [ -z "${PGS}" ]; then
+      PGS="500"
+  fi
+  for test in `cat ./profiles/${PROFILE}`;
+    do
+      if [ "$test" == "rados-bench" ]; then
+        launch_rados
+      else
+        cd ./enabled-tests/;
+        ln -s ../available-tests/$test
+        cd ./..;
+      fi
+    done;
 fi
 
 # first, check that all applications are installed on the system
