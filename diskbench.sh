@@ -181,10 +181,13 @@ do
         ;;
     p)
         PROFILE="${OPTARG}"
+        ;;
     g)
         PGS="${OPTARG}"
+        ;;
     x)
         EXTRA_TESTS="1"
+        ;;
     ?)
         usage
         ;;
