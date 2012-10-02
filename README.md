@@ -20,12 +20,16 @@ By default all the tests are enabled.
 Executing The Tests
 ===========
 
-Once you have enabled the tests you want to run all you need to do is execute is the fio-runner.sh script:
+Once you have enabled the tests you want to run all you need to do is execute is the diskbench.sh script:
 
     ./diskbench.sh 
     Usage: ./diskbench.sh: [OPTIONS]
       -u              : Directory/mountpoint to test
       -s              : Test file size (default: 4G)
       -i              : I/O depth (used by fio) (default: 256 - heavy)
+      -n              : Test name (used for the comparaison)
+      -p profile_name : Enable tests based on a profile (optional)
+      -g 500          : Number of pgs for the rados bench pool (default: 500) (optional)
+      -x              : Run extra tests: IOZone and Bonnie++ (optional)
 
 This will execute each of the fio tests and their results will be stored into the results folder.
