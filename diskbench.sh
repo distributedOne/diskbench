@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 ## SETTINGS ##
 NUMBER_OF_TIMES_TO_RUN_EACH_JOB=3
@@ -12,8 +11,6 @@ YEAR=`date +%Y`
 MONTH=`date +%m`
 DAY=`date +%d`
 TIME=`date +%H%M`
-RESULT_PATH="./results/${YEAR}${MONTH}${DAY}_${TIME}"
-mkdir -p ${RESULT_PATH}
 
 usage()
 {
@@ -79,6 +76,8 @@ launch_fio()
         log "Running: ${t}"
         log "Pass Number: ${COUNTER}"
         log "Test Size: ${TEST_SIZE}"
+        export RESULT_PATH="./results/${YEAR}${MONTH}${DAY}_${TIME}_${TEST_NAME}"
+        mkdir -p ${RESULT_PATH}
         touch ${RESULT_PATH}/fio-${t}-pass-${COUNTER}
         fio --output=${RESULT_PATH}/fio-${t}-pass-${COUNTER} ./enabled-tests/${t}
       log ""
@@ -159,7 +158,7 @@ fiotocsv()
 
 results()
 {
-  tar cfz results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz ${RESULT_PATH}/
+  tar cfz results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}_${TEST_NAME}.tar.gz ${RESULT_PATH}/
   log "Results: results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz"
 }
 
