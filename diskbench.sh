@@ -228,10 +228,9 @@ else
       if [ "$test" == "rados-bench" ]; then
         launch_rados
       else
-        ln -s ../available-tests/$test
+        cd ./enabled-tests/; ln -s ../available-tests/$test; cd ..;
       fi
     done;
-  cd ./..;
 fi
 
 launch_fio
