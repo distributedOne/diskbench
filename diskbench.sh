@@ -79,6 +79,7 @@ launch_fio()
         export RESULT_PATH="./results/${YEAR}${MONTH}${DAY}_${TIME}_${TEST_NAME}"
         mkdir -p ${RESULT_PATH}
         touch ${RESULT_PATH}/fio-${t}-pass-${COUNTER}
+        echo -n ${TEST_NAME} > ${RESULT_PATH}/NAME
         fio --output=${RESULT_PATH}/fio-${t}-pass-${COUNTER} ./enabled-tests/${t}
       log ""
     done
@@ -162,11 +163,6 @@ results()
   log "Results: results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz"
 }
 
-set_name()
-{
-  echo -n ${TEST_NAME} > ${RESULT_PATH}/NAME
-}
-
 while getopts 'u:s:i:n:p:g:x' OPTION
 do
     case ${OPTION} in
@@ -207,9 +203,6 @@ check_apps
 
 # collect system information
 sysinfo
-
-# set test name
-set_name
 
 # start the tests
 log "Start: `date +%H:%M:%S`"
