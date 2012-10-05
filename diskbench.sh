@@ -158,7 +158,7 @@ fiotocsv()
 
 results()
 {
-  tar cfz results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}_${TEST_NAME}.tar.gz ${RESULT_PATH}/
+  tar cfz results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz ${RESULT_PATH}/
   log "Results: results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz"
 }
 
