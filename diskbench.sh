@@ -12,6 +12,10 @@ MONTH=`date +%m`
 DAY=`date +%d`
 TIME=`date +%H%M`
 
+# Used to formatting
+bold=`tput bold`
+normal=`tput sgr0`
+
 usage()
 {
     echo "Usage: $0: [OPTIONS]"
@@ -160,8 +164,6 @@ fiotocsv()
 
 available_tests()
 {
-  bold=`tput bold`
-  normal=`tput sgr0`
   echo -e "\n${bold}Available tests${normal}"
   for test in `ls -1 available-tests`;
   do
@@ -181,6 +183,20 @@ available_tests()
   done
 
   exit 1
+}
+
+check_profile()
+{
+  if [ ! -e profiles/${PROFILE_NAME} ]
+    then
+      echo "Profile does not exist!"
+      echo -e "${bold}Available Profiles${normal}"
+      for profile in `ls -1 profiles`
+      do
+        echo -e "\t$profile"
+      done
+      exit 1
+  fi
 }
 
 results()
@@ -233,13 +249,12 @@ check_apps
 # collect system information
 sysinfo
 
-# start the tests
-log "Start: `date +%H:%M:%S`"
-
 # set profile to none if empty
 if [ -z "${PROFILE_NAME}" ]; then
     PROFILE_NAME="none"
 else
+  check_profile
+
   if [ -z "${PGS}" ]; then
       PGS="500"
   fi
@@ -254,6 +269,9 @@ else
       fi
     done;
 fi
+
+# start the tests
+log "Start: `date +%H:%M:%S`"
 
 launch_fio
 if [ ! -z "${EXTRA_TESTS}" ]; then
