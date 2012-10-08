@@ -85,6 +85,8 @@ launch_fio()
         mkdir -p ${RESULT_PATH}
         touch ${RESULT_PATH}/fio-${t}-pass-${COUNTER}
         echo -n ${TEST_NAME} > ${RESULT_PATH}/NAME
+        #Drop caches
+        echo 3 > /proc/sys/vm/drop_caches
         fio --output=${RESULT_PATH}/fio-${t}-pass-${COUNTER} ./enabled-tests/${t}
       log ""
     done
