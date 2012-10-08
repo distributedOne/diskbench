@@ -22,6 +22,7 @@ usage()
     echo "  -p profile_name : Enable tests based on a profile (optional)"
     echo "  -g 500          : Number of pgs for the rados bench pool (default: 500) (optional)"
     echo "  -x              : Run extra tests: IOZone and Bonnie++ (optional)"
+    echo "  -l              : List available tests"
     echo ""
     echo "Example:"
     echo "  $0 -u /mnt/nfs/ -s 4G -i 256 -n mytestname -x"
@@ -157,13 +158,38 @@ fiotocsv()
   done
 }
 
+available_tests()
+{
+  bold=`tput bold`
+  normal=`tput sgr0`
+  echo -e "\n${bold}Available tests${normal}"
+  for test in `ls -1 available-tests`;
+  do
+    echo -e "\t$test"
+  done
+
+  echo -e "\n${bold}Enabled tests${normal}"
+  for test in `ls -1 enabled-tests`;
+  do
+    echo -e "\t$test"
+  done
+
+  echo -e "\n${bold}Available profiles${normal}"
+  for profile in `ls -1 profiles`
+  do
+    echo -e "\t$profile"
+  done
+
+  exit 1
+}
+
 results()
 {
   tar cfz results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz ${RESULT_PATH}/
   log "Results: results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz"
 }
 
-while getopts 'u:s:i:n:p:g:x' OPTION
+while getopts 'u:s:i:n:p:g:x:l' OPTION
 do
     case ${OPTION} in
     u)
@@ -186,6 +212,9 @@ do
         ;;
     x)
         export EXTRA_TESTS="1"
+        ;;
+    l)
+        available_tests
         ;;
     ?)
         usage
