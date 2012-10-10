@@ -246,7 +246,7 @@ do
 done
 
 # mandatory parameters
-if [ ! "${TEST_DIRECTORY}" ] || [ ! "${TEST_SIZE}" ] || [ ! "${IO_DEPTH}" ] || [ ! "${TEST_NAME}" ]; then
+if [ ! "${TEST_DIRECTORY}" ] || [ ! "${TEST_NAME}" ]; then
     usage
 fi
 
