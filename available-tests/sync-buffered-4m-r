@@ -10,3 +10,4 @@ ioengine=sync
 iodepth=1
 filename=${TEST_FILENAME}
 directory=${TEST_DIRECTORY}
+runtime=${RUNTIME}

@@ -5,6 +5,7 @@ NUMBER_OF_TIMES_TO_RUN_EACH_JOB=3
 export TEST_SIZE="4096m"
 export TEST_FILENAME="fio_test_file"
 export IO_DEPTH="256"
+export RUNTIME="3600"
 
 # get time and create results folder
 YEAR=`date +%Y`
@@ -26,10 +27,11 @@ usage()
     echo "  -p profile_name : Enable tests based on a profile (optional)"
     echo "  -g 500          : Number of pgs for the rados bench pool (default: 500) (optional)"
     echo "  -x              : Run extra tests: IOZone and Bonnie++ (optional)"
+    echo "  -t              : Set the runtime for indiviual FIO test (default: 3600 seconds)"
     echo "  -l              : List available tests"
     echo ""
     echo "Example:"
-    echo "  $0 -u /mnt/nfs/ -s 4G -i 256 -n mytestname -x"
+    echo "  $0 -u /mnt/nfs/ -s 4G -i 256 -n mytestname -x -t 600"
     exit 1
 }
 
@@ -207,7 +209,7 @@ results()
   log "Results: results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz"
 }
 
-while getopts 'u:s:i:n:p:g:x:l' OPTION
+while getopts 'u:s:i:n:p:g:x:t:l' OPTION
 do
     case ${OPTION} in
     u)
@@ -230,6 +232,9 @@ do
         ;;
     x)
         export EXTRA_TESTS="1"
+        ;;
+    t)
+        export RUNTIME="${OPTARG}"
         ;;
     l)
         available_tests

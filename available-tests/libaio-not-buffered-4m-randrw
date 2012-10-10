@@ -10,3 +10,4 @@ ioengine=libaio
 iodepth=${IO_DEPTH}
 filename=${TEST_FILENAME}
 directory=${TEST_DIRECTORY}
+runtime=${RUNTIME}
