@@ -30,7 +30,7 @@ Once you have enabled the tests you want to run all you need to do is execute is
       -n              : Test name (used for the comparaison)
       -p profile_name : Enable tests based on a profile (optional)
       -g 500          : Number of pgs for the rados bench pool (default: 500) (optional)
-      -t              : Set the runtime for indiviual FIO test (default: 3600 seconds)
+      -t              : Set the runtime for individual fio tests (default: 3600 seconds)
       -x              : Run extra tests: IOZone and Bonnie++ (optional)
       -l              : List available tests
 
