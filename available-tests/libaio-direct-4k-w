@@ -1,13 +1,13 @@
 [global]
-description=Sync engine 4m blocks (Non-buffered I/O) Read-only
+description=libaio engine 4k blocks (Direct I/O) Write-only
 
-[sync-not-buffered-4m-r]
-bs=4m
-rw=read
+[libaio-direct-4k-w]
+bs=4k
+rw=write
 direct=1
 buffered=0
 size=${TEST_SIZE}
-ioengine=sync
+ioengine=libaio
 iodepth=${IO_DEPTH}
 filename=${TEST_FILENAME}
 directory=${TEST_DIRECTORY}

@@ -5,6 +5,7 @@ description=Sync engine 4k blocks (Non-buffered I/O) Read-only
 bs=4k
 rw=read
 direct=1
+buffered=0
 size=${TEST_SIZE}
 ioengine=sync
 iodepth=${IO_DEPTH}
