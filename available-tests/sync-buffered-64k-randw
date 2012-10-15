@@ -9,4 +9,5 @@ size=${TEST_SIZE}
 ioengine=sync
 iodepth=1
 filename=${TEST_FILENAME}
-directory=${TEST_DIRECTORY}runtime=${RUNTIME}
+directory=${TEST_DIRECTORY}
+runtime=${RUNTIME}
