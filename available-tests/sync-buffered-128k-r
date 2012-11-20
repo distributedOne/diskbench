@@ -1,0 +1,13 @@
+[global]
+description=Sync engine 128k blocks (Buffered I/O) Read-only
+
+[sync-buffered-128k-r]
+bs=128k
+rw=read
+direct=0
+size=${TEST_SIZE}
+ioengine=sync
+iodepth=1
+filename=${TEST_FILENAME}
+directory=${TEST_DIRECTORY}
+runtime=${RUNTIME}

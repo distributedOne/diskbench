@@ -1,0 +1,13 @@
+[global]
+description=Sync engine 128k blocks (Buffered I/O) Write-only
+
+[sync-buffered-128k-w]
+bs=128k
+rw=write
+direct=0
+size=${TEST_SIZE}
+ioengine=sync
+iodepth=1
+filename=${TEST_FILENAME}
+directory=${TEST_DIRECTORY}
+runtime=${RUNTIME}

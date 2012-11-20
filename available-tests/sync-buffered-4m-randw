@@ -1,0 +1,13 @@
+[global]
+description=Sync engine 4m blocks (Buffered I/O) Random Write
+
+[sync-buffered-4m-randw]
+bs=4m
+rw=randwrite
+direct=0
+size=${TEST_SIZE}
+ioengine=sync
+iodepth=1
+filename=${TEST_FILENAME}
+directory=${TEST_DIRECTORY}
+runtime=${RUNTIME}
