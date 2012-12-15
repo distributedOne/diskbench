@@ -5,12 +5,12 @@ ROOT_PATH="results"
 echo "Test Name,Read IOPS,WRITE IOPS,READ BW, WRITE BW"
 for runset in `ls -1 $ROOT_PATH/`;
 do
-  ROOT_PATH="${ROOT_PATH}/${runset}"
-  for pass in `ls -1 $ROOT_PATH/fio-* | awk -F'pass-' {'print \$2'} | uniq | sort | uniq`;
+  FILE_PATH="${ROOT_PATH}/${runset}"
+  for pass in `ls -1 $FILE_PATH/fio-* | awk -F'pass-' {'print \$2'} | uniq | sort | uniq`;
   do
-    for file in `ls -1 $ROOT_PATH/fio-*-$pass`;
+    for file in `ls -1 $FILE_PATH/fio-*-$pass`;
     do
-      cat $ROOT_PATH/NAME
+      cat $FILE_PATH/NAME
       echo -n ","
       JOB=`head -n 1 ${file} | awk -F: {'print \$1'}`
       echo -n "${JOB},";
