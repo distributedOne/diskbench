@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## SETTINGS ##
-NUMBER_OF_TIMES_TO_RUN_EACH_JOB=3
+NUMBER_OF_TIMES_TO_RUN_EACH_JOB=1
 export TEST_SIZE="4096m"
 export TEST_FILENAME="fio_test_file"
 export IO_DEPTH="256"
@@ -49,7 +49,7 @@ sysinfo()
     cat /proc/$proc > ${RESULT_PATH}/sysinfo/$proc
   done
 
-  for cmd in dmesg env lscpu lsmod lspci dmidecode free
+  for cmd in dmesg env lscpu lsmod lspci free
   do
     $cmd > ${RESULT_PATH}/sysinfo/$cmd
   done
@@ -118,7 +118,7 @@ launch_bonnie()
 
 check_apps()
 {
-  for app in fio dmidecode
+  for app in fio
   do
     if [ ! "`which $app`" ]; then
         echo "ERROR: '$app' application is required."
